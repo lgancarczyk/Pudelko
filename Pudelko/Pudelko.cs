@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using static Pudelko.IPudelko;
 
 namespace Pudelko
 {
-    class Pudelko : IPudelko
+    public sealed class Pudelko
     {
         private UnitOfMeasure Unit { get; set; }
         public double A { get; private set; }
@@ -52,6 +53,11 @@ namespace Pudelko
             {
                 return true;
             }
+        }
+
+        public override string ToString() 
+        {
+            return $"{A:0.000} m \u00D7 {B:0.000} m \u00D7 {C:0.000} m";
         }
 
     }
