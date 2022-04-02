@@ -7,7 +7,7 @@ namespace Pudelko
     {
         static void Main(string[] args)
         {
-            Pudelko pudelko = new Pudelko(a:1, unit: UnitOfMeasure.milimeter);
+            Pudelko pudelko = new Pudelko( unit: UnitOfMeasure.milimeter);
             //Pudelko pudelko2 = new Pudelko();
             Console.WriteLine("A: " + pudelko.A);
             Console.WriteLine("B: " + pudelko.B);
@@ -15,6 +15,8 @@ namespace Pudelko
             Console.WriteLine(pudelko.ToString());
             Console.WriteLine(pudelko.ToString("cm"));
             Console.WriteLine(pudelko.ToString("mm"));
+            Console.WriteLine($"Objestosc: {pudelko.Objetosc}");
+            Console.WriteLine($"Pole: {pudelko.Pole}");
         }
     }
 }

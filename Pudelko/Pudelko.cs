@@ -15,8 +15,10 @@ namespace Pudelko
         public double A { get; private set; }
         public double B { get; private set; }
         public double C { get; private set; }
+
         //Box properties taht has to be counted
         public double Objetosc => Math.Round(A * B * C, 9);
+        public double Pole => Math.Round((A*B*2) + (A*C*2) + (B*C*2), 6);
 
         public Pudelko(double? a = null, double? b = null, double? c = null, UnitOfMeasure unit = UnitOfMeasure.meter)
         {
