@@ -3,43 +3,56 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Pudelko.IPudelko;
 
 namespace Pudelko
 {
     class Pudelko : IPudelko
     {
-        private double A { get; set; }
-        private double B { get; set; }
-        private double C { get; set; }
-        public Pudelko(double a= 0.1, double b = 0.1, double c = 0.1, IPudelko.UnitOfMeasure unit = IPudelko.UnitOfMeasure.centimeter)
+        private UnitOfMeasure Unit { get; set; }
+        public double A { get; private set; }
+        public double B { get; private set; }
+        public double C { get; private set; }
+        
+        public Pudelko(double? a = null, double? b = null, double? c = null, UnitOfMeasure unit = UnitOfMeasure.meter)
+        {
+
+            this.A = a == null ? 0.1 : ConvertToMeter((double)a, unit);
+            this.B = b == null ? 0.1 : ConvertToMeter((double)b, unit);
+            this.C = c == null ? 0.1 : ConvertToMeter((double)c, unit);
+            this.Unit = unit;
+
+            if (IsProperWithGuidelines() == false)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+        }
+        private double ConvertToMeter(double value, UnitOfMeasure unit) 
         {
             switch (unit)
             {
-                case IPudelko.UnitOfMeasure.milimeter:
-                    this.A = a * 1000;
-                    this.B = b * 1000;
-                    this.C = c * 1000;
-                    break;
-                case IPudelko.UnitOfMeasure.centimeter:
-                    this.A = a * 100;
-                    this.B = b * 100;
-                    this.C = c * 100;
-                    break;
-                case IPudelko.UnitOfMeasure.meter:
-                    this.A = a;
-                    this.B = b;
-                    this.C = c;
-                    break;
+                case UnitOfMeasure.milimeter:
+                    return value / 1000;
+                case UnitOfMeasure.centimeter:
+                    return value / 100;
                 default:
-                    this.A = a * 100;
-                    this.B = b * 100;
-                    this.C = c * 100;
-                    break;
+                    return value;
             }
-
-            Console.WriteLine(A);
-            Console.WriteLine(B);
-            Console.WriteLine(C);
         }
+        
+        //egde must be shorter than 10 meters
+        //egde lenght must be positive
+        private bool IsProperWithGuidelines() 
+        {
+            if ( A <=0 || B <=0 || C<=0 || A>10 || B>10 || C>10 )
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
     }
 }
