@@ -10,11 +10,14 @@ namespace Pudelko
 {
     public sealed class Pudelko
     {
+        //Basic box properties
         private UnitOfMeasure Unit { get; set; }
         public double A { get; private set; }
         public double B { get; private set; }
         public double C { get; private set; }
-        
+        //Box properties taht has to be counted
+        public double Objetosc => Math.Round(A * B * C, 9);
+
         public Pudelko(double? a = null, double? b = null, double? c = null, UnitOfMeasure unit = UnitOfMeasure.meter)
         {
 
@@ -58,6 +61,21 @@ namespace Pudelko
         public override string ToString() 
         {
             return $"{A:0.000} m \u00D7 {B:0.000} m \u00D7 {C:0.000} m";
+        }
+        public string ToString(string format)
+        {
+            switch (format)
+            {
+                case("m"):
+                    return ToString();
+                case ("cm"):
+                    return $"{(A*100):0.0} cm \u00D7 {(B*100):0.0} cm \u00D7 {(C*100):0.0} cm";
+                case ("mm"):
+                    return $"{(A * 1000):0} mm \u00D7 {(B * 1000):0} mm \u00D7 {(C * 1000):0} mm";
+                default:
+                    throw new FormatException();
+
+            }
         }
 
     }
