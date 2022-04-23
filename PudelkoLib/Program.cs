@@ -32,6 +32,7 @@ namespace PudelkoLib
             var aaa = new Pudelko(2, 4, 6, UnitOfMeasure.centimeter);
             var bbb = new Pudelko(3, 4, 5, UnitOfMeasure.centimeter);
             Console.WriteLine((aaa+bbb).ToString());
+            Console.WriteLine(pudelko2.Kompresuj().ToString());
 
 
         }
