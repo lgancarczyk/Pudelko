@@ -18,15 +18,13 @@ namespace PudelkoLib
     {
         //Basic box properties
         private UnitOfMeasure Unit { get; set; }
-        //public double A { get; private set; }
-        //public double B { get; private set; }
-        //public double C { get; private set; }
+        
         public readonly double A;
         public readonly double B;
         public readonly double C;
         
 
-        //Box properties taht has to be counted
+        //Box properties that has to be counted
         public double Objetosc => Math.Round(A * B * C, 9);
         public double Pole => Math.Round((A * B * 2) + (A * C * 2) + (B * C * 2), 6);
 
@@ -213,7 +211,7 @@ namespace PudelkoLib
         public static Pudelko Parse(string str)
         {
             double[] edges = new double[3];
-            //oddzielamy tym dziwnym x
+            //Spilts with weird "x"
             string[] rawEdges = str.Split("\u00D7");
             for (int i = 0; i < 3; i++)
             {
