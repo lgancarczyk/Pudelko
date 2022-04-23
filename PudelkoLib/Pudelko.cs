@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,13 +13,17 @@ namespace PudelkoLib
         centimeter,
         meter
     }
-    public sealed class Pudelko : IEquatable<Pudelko>
+    public sealed class Pudelko : IEquatable<Pudelko>, IFormattable
     {
         //Basic box properties
         private UnitOfMeasure Unit { get; set; }
-        public double A { get; private set; }
-        public double B { get; private set; }
-        public double C { get; private set; }
+        //public double A { get; private set; }
+        //public double B { get; private set; }
+        //public double C { get; private set; }
+        public readonly double A;
+        public readonly double B;
+        public readonly double C;
+        
 
         //Box properties taht has to be counted
         public double Objetosc => Math.Round(A * B * C, 9);
@@ -69,16 +74,24 @@ namespace PudelkoLib
         {
             return $"{A:0.000} m \u00D7 {B:0.000} m \u00D7 {C:0.000} m";
         }
-        public string ToString(string format)
+        public string ToString(string format, IFormatProvider formatProvider = null)
         {
+            if (formatProvider == null)
+            {
+                _ = CultureInfo.CurrentCulture;
+            }
+            if (format == null)
+            {
+                format = "m";
+            }
             switch (format)
             {
                 case ("m"):
                     return ToString();
                 case ("cm"):
-                    return $"{(A * 100):0.0} cm \u00D7 {(B * 100):0.0} cm \u00D7 {(C * 100):0.0} cm";
+                    return string.Format($"{(A * 100):0.0} cm \u00D7 {(B * 100):0.0} cm \u00D7 {(C * 100):0.0} cm");
                 case ("mm"):
-                    return $"{(A * 1000):0} mm \u00D7 {(B * 1000):0} mm \u00D7 {(C * 1000):0} mm";
+                    return string.Format($"{(A * 1000):0} mm \u00D7 {(B * 1000):0} mm \u00D7 {(C * 1000):0} mm");
                 default:
                     throw new FormatException();
 
@@ -102,15 +115,20 @@ namespace PudelkoLib
             }
         }
 
-        //public static bool operator ==(Pudelko p1, Pudelko p2)
+        //public override int GetHashCode()
         //{
-        //    return p1.Equals(p2);
+        //    return A.GetHashCode() + B.GetHashCode() + C.GetHashCode() + Unit.GetHashCode();
         //}
 
-        //public static bool operator !=(Pudelko p1, Pudelko p2)
-        //{
-        //    return !p1.Equals(p2);
-        //}
+        public static bool operator ==(Pudelko p1, Pudelko p2)
+        {
+            return p1.Equals(p2);
+        }
+
+        public static bool operator !=(Pudelko p1, Pudelko p2)
+        {
+            return !p1.Equals(p2);
+        }
 
         public static Pudelko operator +(Pudelko p1, Pudelko p2)
         {
@@ -157,6 +175,19 @@ namespace PudelkoLib
 
             return new Pudelko(edgeA, edgeB, edgeC);
         }
+        public double[] ConvertToArray(Pudelko p) 
+        {
+            double[] result = new double[3] {p.A, p.B, p.C};
+            return result;
+        }
+
+        public static implicit operator Pudelko(ValueTuple<int, int, int> a)
+        {
+            Pudelko p = new Pudelko(a.Item1, a.Item2, a.Item3, UnitOfMeasure.milimeter);
+            return p;
+        }
+
+        
 
 
     }
