@@ -14,7 +14,7 @@ namespace PudelkoLib
         centimeter,
         meter
     }
-    public sealed class Pudelko : IEquatable<Pudelko>, IFormattable, IEnumerable
+    public sealed class Pudelko : IEquatable<Pudelko>, IFormattable, IEnumerable, IComparable<Pudelko>
     {
         //Basic box properties
         private UnitOfMeasure Unit { get; set; }
@@ -229,8 +229,45 @@ namespace PudelkoLib
             return new Pudelko(edges[0], edges[1],edges[2]);
         }
 
+        public int CompareTo(Pudelko other)
+        {
+            return compareByVolume(other);
+        }
+        public int compareByVolume(Pudelko other)
+        {
+            if (this.Objetosc == other.Objetosc)
+            {
+                return compareByArea(other);
+            }
+            else
+            {
+                return this.Objetosc > other.Objetosc ? 1 : -1;
+            }
+                
+        }
 
+        private int compareByArea(Pudelko other)
+        {
+            if (this.Pole == other.Pole) 
+            {
+                return compareBySides(other);
+            }
+            else
+            {
+                return this.Pole > other.Pole ? 1 : -1;
+            }
+        }
 
-
+        private int compareBySides(Pudelko other)
+        {
+            if (this.A + this.B + this.C > other.A + other.B + other.C) 
+            {
+                return 0;
+            }
+            else
+            {
+                return this.A + this.B + this.C > other.A + other.B + other.C ? 1 : -1;
+            }
+        }
     }
 }

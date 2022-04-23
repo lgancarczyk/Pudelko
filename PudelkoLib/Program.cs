@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PudelkoLib
 {
@@ -31,8 +32,28 @@ namespace PudelkoLib
             Console.WriteLine(a.ToString());
             var aaa = new Pudelko(2, 4, 6, UnitOfMeasure.centimeter);
             var bbb = new Pudelko(3, 4, 5, UnitOfMeasure.centimeter);
-            Console.WriteLine((aaa+bbb).ToString());
+            Console.WriteLine((aaa + bbb).ToString());
             Console.WriteLine(pudelko2.Kompresuj().ToString());
+
+            #region Sortowanie
+            List<Pudelko> listaPudelek = new List<Pudelko>();
+            listaPudelek.Add(new Pudelko());
+            listaPudelek.Add(new Pudelko(10, 2, 3, UnitOfMeasure.milimeter));
+            listaPudelek.Add(new Pudelko(10, 2, 3, UnitOfMeasure.meter));
+            listaPudelek.Add(new Pudelko(10, 2, 3, UnitOfMeasure.centimeter));
+            listaPudelek.Add(new Pudelko(1000, 2000, 3100, UnitOfMeasure.milimeter));
+            listaPudelek.Sort();
+            Console.WriteLine("Posortowane Pudełka");
+            foreach (var item in listaPudelek)
+            {
+                Console.WriteLine($"{item.ToString()} Objętość: {item.Objetosc} Powierzchnia {item.Pole}");
+            }
+
+
+
+            #endregion
+
+
 
 
         }
