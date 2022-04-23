@@ -449,15 +449,60 @@ namespace PudelkoUnitTests
 
         #region Pole, Objêtoœæ ===================================
         // ToDo
+        [TestMethod, TestCategory("Pole")]
+        [DataRow(6, 4, 8, 208)]
+        [DataRow(0.1, 1, 0.2, 0.64)]
+        [DataRow(1.2, 1.1, 1.4, 9.08)]
+
+
+        public void Pole(double a, double b, double c, double excepted)
+        {
+            Pudelko p1 = new Pudelko(a, b, c);
+            Assert.AreEqual(excepted, p1.Pole);
+
+        }
+
+        [TestMethod, TestCategory("Objêtoœæ")]
+        [DataRow(1, 1, 1, 1)]
+        [DataRow(0.1, 1, 0.2, 0.02)]
+        [DataRow(1.2, 1.1, 1.4, 1.848)]
+
+
+        public void Objetosc(double a, double b, double c, double excepted)
+        {
+            Pudelko p1 = new Pudelko(a, b, c);
+            Assert.AreEqual(excepted, p1.Objetosc);
+        }
 
         #endregion
 
         #region Equals ===========================================
         // ToDo
+        [DataTestMethod, TestCategory("Equals")]
+        [DataRow(UnitOfMeasure.meter, 1, 1, 6, 1, 6, 1, UnitOfMeasure.meter)]
+        [DataRow(UnitOfMeasure.meter, 1, 1, 6, 600, 100, 100, UnitOfMeasure.centimeter)]
+        [DataRow(UnitOfMeasure.meter, 1, 1, 6, 1000, 6000, 1000, UnitOfMeasure.milimeter)]
+        
+        public void SameEquals(UnitOfMeasure format, double a, double b, double c, double x, double y, double z, UnitOfMeasure format2)
+        {
+            Pudelko p1 = new Pudelko(a, b, c, format);
+            Pudelko p2 = new Pudelko(x, y, z, format2);
+            Assert.IsTrue(p1.Equals(p2));
+        }
         #endregion
 
         #region Operators overloading ===========================
         // ToDo
+        [DataTestMethod, TestCategory("Operators overloading")]
+        [DataRow(2, 4, 6, UnitOfMeasure.centimeter, 3, 4, 5, UnitOfMeasure.centimeter, 0.05)]
+        
+        public void IsNotSameOperators( double a, double b, double c, UnitOfMeasure unit1, double x, double y, double z, UnitOfMeasure unit2, double p3a)
+        {
+            Pudelko p1 = new Pudelko(a, b, c, unit1);
+            Pudelko p2 = new Pudelko(x, y, z, unit2);
+            var p3 = p1 + p2;
+            Assert.AreEqual(p3a, p3.A);
+        }
         #endregion
 
         #region Conversions =====================================
@@ -510,6 +555,20 @@ namespace PudelkoUnitTests
         #endregion
 
         #region Parsing =========================================
+
+        [TestMethod, TestCategory("Parse")]
+        [DataRow("1 m × 1 m × 1 m", 1, 1, 1)]
+        [DataRow("1 mm × 1 cm × 1 m", 0.001, 0.01, 1)]
+        [DataRow("10 mm × 20 cm × 1 m", 0.01, 0.2, 1)]
+        [DataRow("15 mm × 200 mm × 3 m", 0.015, 0.2, 3)]
+
+        public void Parsing(string unit, double A, double B, double C)
+        {
+            Pudelko p1 = Pudelko.Parse(unit);
+            Assert.AreEqual(p1.A, A);
+            Assert.AreEqual(p1.B, B);
+            Assert.AreEqual(p1.C, C);
+        }
 
         #endregion
 

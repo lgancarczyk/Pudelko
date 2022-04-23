@@ -27,8 +27,11 @@ namespace PudelkoLib
             //{
             //    Console.Write($" {item}");
             //}
-            var a = Pudelko.Parse("2.500 m × 9 cm × 0.100 m");
+            var a = Pudelko.Parse("3 m × 3 m × 3 m");
             Console.WriteLine(a.ToString());
+            var aaa = new Pudelko(2, 4, 6, UnitOfMeasure.centimeter);
+            var bbb = new Pudelko(3, 4, 5, UnitOfMeasure.centimeter);
+            Console.WriteLine((aaa+bbb).ToString());
 
 
         }
