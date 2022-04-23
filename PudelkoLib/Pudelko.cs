@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace PudelkoLib
         centimeter,
         meter
     }
-    public sealed class Pudelko : IEquatable<Pudelko>, IFormattable
+    public sealed class Pudelko : IEquatable<Pudelko>, IFormattable, IEnumerable
     {
         //Basic box properties
         private UnitOfMeasure Unit { get; set; }
@@ -31,11 +32,16 @@ namespace PudelkoLib
 
         public Pudelko(double? a = null, double? b = null, double? c = null, UnitOfMeasure unit = UnitOfMeasure.meter)
         {
+            
 
             this.A = a == null ? 0.1 : ConvertToMeter((double)a, unit);
             this.B = b == null ? 0.1 : ConvertToMeter((double)b, unit);
             this.C = c == null ? 0.1 : ConvertToMeter((double)c, unit);
             this.Unit = unit;
+            if (A<0.001 || B < 0.001 || C < 0.001)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
 
             if (IsProperWithGuidelines() == false)
             {
@@ -43,7 +49,7 @@ namespace PudelkoLib
             }
         }
 
-        private double ConvertToMeter(double value, UnitOfMeasure unit)
+        private static double ConvertToMeter(double value, UnitOfMeasure unit)
         {
             switch (unit)
             {
@@ -115,13 +121,18 @@ namespace PudelkoLib
             }
         }
 
-        //public override int GetHashCode()
-        //{
-        //    return A.GetHashCode() + B.GetHashCode() + C.GetHashCode() + Unit.GetHashCode();
-        //}
+        public override int GetHashCode()
+        {
+            return A.GetHashCode() + B.GetHashCode() + C.GetHashCode() + Unit.GetHashCode();
+        }
 
         public static bool operator ==(Pudelko p1, Pudelko p2)
         {
+            if (((object)p1) == null || ((object)p2) == null)
+            {
+                return Object.Equals(p1, p2);
+            }
+
             return p1.Equals(p2);
         }
 
@@ -181,13 +192,44 @@ namespace PudelkoLib
             return result;
         }
 
+        public IEnumerator<double> GetEnumerator()
+        {
+            yield return A;
+            yield return B;
+            yield return C;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() 
+        {
+            return this.GetEnumerator();
+        }
+
         public static implicit operator Pudelko(ValueTuple<int, int, int> a)
         {
             Pudelko p = new Pudelko(a.Item1, a.Item2, a.Item3, UnitOfMeasure.milimeter);
             return p;
         }
 
-        
+        public static Pudelko Parse(string str)
+        {
+            double[] edges = new double[3];
+            //oddzielamy tym dziwnym x
+            string[] rawEdges = str.Split("\u00D7");
+            for (int i = 0; i < 3; i++)
+            {
+                string trimmeditem = rawEdges[i].Trim();
+                string[] aa = trimmeditem.Replace(".", ",").Split(" ");
+                double number = Convert.ToDouble(aa[0]);
+                UnitOfMeasure unit;
+                if (aa[1] == "mm") { unit = UnitOfMeasure.milimeter; }
+                else if (aa[1] == "cm") { unit = UnitOfMeasure.centimeter; }
+                else { unit = UnitOfMeasure.meter; }
+                edges[i] = ConvertToMeter(number, unit);
+            }
+            return new Pudelko(edges[0], edges[1],edges[2]);
+        }
+
+
 
 
     }

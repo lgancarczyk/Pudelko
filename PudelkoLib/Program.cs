@@ -22,11 +22,13 @@ namespace PudelkoLib
             Console.WriteLine($"HashCode: {pudelko.GetHashCode()}");
             Console.WriteLine($"Wymiary pudelka na pudelko1 i pudelko2:  {(pudelko + pudelko2).ToString()}");
             double[] result = pudelko.ConvertToArray(pudelko);
-            Console.Write($"Explicit: ");
-            foreach (var item in result)
-            {
-                Console.Write($" {item}");
-            }            
+            //Console.Write($"Explicit: ");
+            //foreach (var item in result)
+            //{
+            //    Console.Write($" {item}");
+            //}
+            var a = Pudelko.Parse("2.500 m × 9 cm × 0.100 m");
+            Console.WriteLine(a.ToString());
 
 
         }
